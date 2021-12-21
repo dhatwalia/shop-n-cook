@@ -1,4 +1,4 @@
-import { EventEmitter } from "@angular/core";
+import { Subject } from "rxjs";
 import { Ingredient } from "../shared/ingredient.model";
 
 export class ShoppingListService {
@@ -12,7 +12,7 @@ export class ShoppingListService {
         new Ingredient('Salt', 3),
         new Ingredient('Vegetable Oil', 5),
     ];
-    ingredientsChanged = new EventEmitter<Ingredient[]>();
+    ingredientsChanged = new Subject<Ingredient[]>();
 
     getIngredient() {
         return this.ingredients.slice();
@@ -20,12 +20,12 @@ export class ShoppingListService {
 
     addIngredient(ingredient: Ingredient) {
         this.ingredients.push(ingredient);
-        this.ingredientsChanged.emit(this.ingredients.slice());
+        this.ingredientsChanged.next(this.ingredients.slice());
     }
 
     addIngredients(ingredients: Ingredient[]) {
         // Spread operator(...) is used for conversting [] to list
         this.ingredients.push(...ingredients);
-        this.ingredientsChanged.emit(this.ingredients.slice());
+        this.ingredientsChanged.next(this.ingredients.slice());
     }
 }
