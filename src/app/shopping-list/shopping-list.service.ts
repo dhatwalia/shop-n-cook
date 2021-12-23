@@ -13,9 +13,14 @@ export class ShoppingListService {
         new Ingredient('Vegetable Oil', 5),
     ];
     ingredientsChanged = new Subject<Ingredient[]>();
+    startedEditing = new Subject<number>();
 
-    getIngredient() {
+    getIngredients() {
         return this.ingredients.slice();
+    }
+
+    getIngredient(index: number) {
+        return this.ingredients[index];
     }
 
     addIngredient(ingredient: Ingredient) {
@@ -26,6 +31,11 @@ export class ShoppingListService {
     addIngredients(ingredients: Ingredient[]) {
         // Spread operator(...) is used for conversting [] to list
         this.ingredients.push(...ingredients);
+        this.ingredientsChanged.next(this.ingredients.slice());
+    }
+
+    updateIngedient(index: number, newIngredient: Ingredient) {
+        this.ingredients[index] = newIngredient;
         this.ingredientsChanged.next(this.ingredients.slice());
     }
 }
