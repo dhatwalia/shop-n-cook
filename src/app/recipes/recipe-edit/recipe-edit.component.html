@@ -19,13 +19,13 @@
                 <div class="col-xs-12">
                     <div class="form-group">
                         <label for="imagePath">Image URL</label>
-                        <input type="text" id="imagePath" formControlName="imagePath" class="form-control">
+                        <input type="text" id="imagePath" formControlName="imagePath" class="form-control" #imagePath>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                    <img src="" class="image-responsive">
+                    <img [src]="imagePath.value" class="image-responsive">
                 </div>
             </div>
             <div class="row">
@@ -39,9 +39,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-12" formArrayName="ingredients">
-                    <div class="row"
-                        *ngFor="let ingredientCtrl of controls; let i = index"
-                        [formGroupName]="i">
+                    <div class="row" *ngFor="let ingredientCtrl of controls; let i = index" [formGroupName]="i">
                         <div class="col-xs-8">
                             <input type="text" class="form-control" formControlName="name">
                         </div>
@@ -55,7 +53,8 @@
                     <hr>
                     <div class="row">
                         <div class="col-xs-12">
-                            <button type="button" class="btn btn-success" (click)="onAddIngredient()">Add Ingredient</button>
+                            <button type="button" class="btn btn-success" (click)="onAddIngredient()">Add
+                                Ingredient</button>
                         </div>
                     </div>
                 </div>
