@@ -1,10 +1,13 @@
 import { Injectable } from "@angular/core";
+import { Subject } from "rxjs";
 import { Ingredient } from "../shared/ingredient.model";
 import { ShoppingListService } from "../shopping-list/shopping-list.service";
 import { Recipe } from "./recipe.model";
 
 @Injectable()
 export class RecipeService {
+    recipesChanged = new Subject<Recipe[]>();
+
     private recipes: Recipe[] = [
         new Recipe('Baingan Bharta', 'Baingan Bharta is a perfect local vegan dish. It originated in India but is also famous in Pakistan and Bangladesh. Baingan Bharta could be made at any time of the day but is generally preferred for Lunch and Dinner as a main course. It serves best with Roti (Flatbread). The history of this very old recipe is less known. The key ingredients used to make Baingan Bharta are: Eggplant, Garlic, Tomato, and Onion. The dish was named Baingan Bharta because Baingan means Eggplant and Bharta means mashed. Overall, the dish is made up of smoked and mashed eggplant.', 'http://dishesfromhome.uwaytbay.ca/images/recipes/baingan_bharta/final_dish.jpg', [
             new Ingredient('Eggplant', 3),
@@ -52,5 +55,15 @@ export class RecipeService {
 
     addIngredientsToList(ingredients: Ingredient[]) {
         this.sLService.addIngredients(ingredients);
+    }
+
+    addRecipe(recipe: Recipe) {
+        this.recipes.push(recipe);
+        this.recipesChanged.next(this.recipes.slice());
+    }
+
+    updateRecipe(index: number, newRecipe: Recipe) {
+        this.recipes[index] = newRecipe;
+        this.recipesChanged.next(this.recipes.slice());
     }
 }
