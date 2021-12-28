@@ -2,3 +2,7 @@ input.ng-invalid.ng-touched,
 textarea-invalid.ng-touched {
     border: 1px solid red;
 }
+
+.image-responsive {
+    width: 100%;
+}
