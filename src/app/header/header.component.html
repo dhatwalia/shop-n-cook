@@ -19,7 +19,7 @@
                 </li>
                 <li routerLinkActive="active" *ngIf="!isAuth"><a routerLink="/auth">Login</a></li>
                 <li *ngIf="isAuth">
-                    <a style="cursor: pointer;">Logout</a>
+                    <a style="cursor: pointer;" (click)="onLogout()">Logout</a>
                 </li>
             </ul>
         </div>
