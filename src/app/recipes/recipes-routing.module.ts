@@ -9,11 +9,11 @@ import { RecipeComponent } from "./recipes.component";
 
 const routes: Routes = [
     {
-        path: 'recipes', component: RecipeComponent, canActivate: [AuthGaurd], children: [
+        path: '', component: RecipeComponent, canActivate: [AuthGaurd], children: [
             { path: '', component: RecipeStartComponent },
             { path: 'new', component: RecipeEditComponent },
             { path: ':id', component: RecipeDetailComponent, resolve: [RecipeResolverService] },
-            { path: ':id/edit', component: RecipeEditComponent, resolve: [RecipeResolverService] },
+            { path: ':id/edit', component: RecipeEditComponent, resolve: [RecipeResolverService] }
         ]
     }
 ];
