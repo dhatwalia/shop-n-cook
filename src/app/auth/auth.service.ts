@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { BehaviorSubject, catchError, tap, throwError } from "rxjs";
 import { User } from "./user.model";
+import { environment } from "src/environments/environment";
 
 export interface AuthResponseData {
     kind: string;
@@ -18,12 +19,13 @@ export interface AuthResponseData {
 export class AuthService {
     // Gets access to User even if only subscribe after that User has been emitted
     user = new BehaviorSubject<User>(null);
+    apiKey = environment.firebaseAPIKey;
     private tokenExpTimer: any;
 
     constructor(private http: HttpClient, private router: Router) { }
 
     signup(email: string, password: string) {
-        return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBHg3pz_UyVem9m5BFERe8XB3gHJgfPK0U', {
+        return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + this.apiKey, {
             email: email,
             password: password,
             returnedSecureToken: true
@@ -33,7 +35,7 @@ export class AuthService {
     }
 
     login(email: string, password: string) {
-        return this.http.post<AuthResponseData>('https://securetoken.googleapis.com/v1/token?key=AIzaSyBHg3pz_UyVem9m5BFERe8XB3gHJgfPK0U', {
+        return this.http.post<AuthResponseData>('https://securetoken.googleapis.com/v1/token?key=' + this.apiKey, {
             email: email,
             password: password,
             returnedSecureToken: true
