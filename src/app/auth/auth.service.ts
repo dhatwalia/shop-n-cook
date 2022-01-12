@@ -1,7 +1,8 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { catchError, tap, throwError } from "rxjs";
+import { catchError, tap } from "rxjs/operators";
+import { throwError } from "rxjs";
 import { User } from "./user.model";
 import { environment } from "src/environments/environment";
 import { Store } from "@ngrx/store";
@@ -27,20 +28,20 @@ export class AuthService {
     constructor(private http: HttpClient, private router: Router, private store: Store<fromApp.AppState>) { }
 
     signup(email: string, password: string) {
-        return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + this.apiKey, {
+        return this.http.post<AuthResponseData>('https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=' + this.apiKey, {
             email: email,
             password: password,
-            returnedSecureToken: true
+            returnSecureToken: true
         }).pipe(catchError(this.errorHandle), tap(resData => {
             this.handleAuth(resData.email, resData.localId, resData.idToken, +resData.expiresIn)
         }));
     }
 
     login(email: string, password: string) {
-        return this.http.post<AuthResponseData>('https://securetoken.googleapis.com/v1/token?key=' + this.apiKey, {
+        return this.http.post<AuthResponseData>('https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=' + this.apiKey, {
             email: email,
             password: password,
-            returnedSecureToken: true
+            returnSecureToken: true
         }).pipe(catchError(this.errorHandle), tap(resData => {
             this.handleAuth(resData.email, resData.localId, resData.idToken, +resData.expiresIn)
         }));
