@@ -1,7 +1,6 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { catchError, tap } from "rxjs/operators";
 import { throwError } from "rxjs";
 import { User } from "./user.model";
 import { environment } from "src/environments/environment";
@@ -27,26 +26,6 @@ export class AuthService {
 
     constructor(private http: HttpClient, private router: Router, private store: Store<fromApp.AppState>) { }
 
-    signup(email: string, password: string) {
-        return this.http.post<AuthResponseData>('https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=' + this.apiKey, {
-            email: email,
-            password: password,
-            returnSecureToken: true
-        }).pipe(catchError(this.errorHandle), tap(resData => {
-            this.handleAuth(resData.email, resData.localId, resData.idToken, +resData.expiresIn)
-        }));
-    }
-
-    login(email: string, password: string) {
-        return this.http.post<AuthResponseData>('https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=' + this.apiKey, {
-            email: email,
-            password: password,
-            returnSecureToken: true
-        }).pipe(catchError(this.errorHandle), tap(resData => {
-            this.handleAuth(resData.email, resData.localId, resData.idToken, +resData.expiresIn)
-        }));
-    }
-
     autoLogin() {
         const userData: {
             email: string;
@@ -68,7 +47,6 @@ export class AuthService {
 
     logout() {
         this.store.dispatch(new AuthActions.Logout());
-        this.router.navigate(['/auth']);
         localStorage.removeItem('userData');
         if (this.tokenExpTimer)
             clearTimeout(this.tokenExpTimer);
