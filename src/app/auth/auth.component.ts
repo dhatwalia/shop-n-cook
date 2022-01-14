@@ -1,11 +1,10 @@
-import { Component, ComponentFactoryResolver, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
-import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Observable, Subscription } from "rxjs";
-import { AuthResponseData, AuthService } from "./auth.service";
 import * as fromApp from "../store/app.reducer";
 import * as AuthActions from "./store/auth.actions";
+import { AuthResponseData } from "./store/auth.effects";
 
 @Component({
     selector: 'app-auth',
@@ -18,8 +17,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     private closeSub: Subscription;
     private storeSub: Subscription;
 
-    constructor(private authService: AuthService, private router: Router, private store: Store<fromApp.AppState>,
-        private componentFactoryResolver: ComponentFactoryResolver) { }
+    constructor(private store: Store<fromApp.AppState>) { }
 
     ngOnInit(): void {
         this.storeSub = this.store.select('auth').subscribe(authState => {
