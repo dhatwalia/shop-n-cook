@@ -5,7 +5,7 @@ import { Store } from "@ngrx/store";
 import { Observable, Subscription } from "rxjs";
 import { AuthResponseData, AuthService } from "./auth.service";
 import * as fromApp from "../store/app.reducer";
-import * as AuthAcctions from "./store/auth.actions";
+import * as AuthActions from "./store/auth.actions";
 
 @Component({
     selector: 'app-auth',
@@ -40,12 +40,11 @@ export class AuthComponent implements OnInit, OnDestroy {
 
         let authObs: Observable<AuthResponseData>;
 
-        this.isLoading = true;
         if (this.isLoginMode) {
-            this.store.dispatch(new AuthAcctions.LoginStart({ email: email, password: password }));
+            this.store.dispatch(new AuthActions.LoginStart({ email: email, password: password }));
         }
         else {
-            authObs = this.authService.signup(email, password);
+            this.store.dispatch(new AuthActions.SignupStart({ email: email, password: password }));
         }
 
         authForm.reset();
