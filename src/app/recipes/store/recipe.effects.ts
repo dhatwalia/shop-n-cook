@@ -15,9 +15,10 @@ export class RecipeEffects {
     }),
         map(recipes => {
             // pipe is used to ensure we have an ingredients [] even when no ingredients are entered by the user
-            return recipes.map(recipe => {
-                return { ...recipe, ingredients: recipe.ingredients ? recipe.ingredients : [] };
-            });
+            if (recipes)
+                return recipes.map(recipe => {
+                    return { ...recipe, ingredients: recipe.ingredients ? recipe.ingredients : [] };
+                });
         }),
         map(recipes => {
             return new RecipesActions.SetRecipes(recipes);
